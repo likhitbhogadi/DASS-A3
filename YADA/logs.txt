@@ -4,3 +4,4 @@ Apple,2
 apple,3
 apple,2
 apple,2
+food1,10

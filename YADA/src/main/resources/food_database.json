@@ -1,0 +1,27 @@
+[
+  {
+    "id": "apple",
+    "keywords": ["fruit", "red", "sweet", "healthy", "crisp"],
+    "calories": 95
+  },
+  {
+    "id": "banana",
+    "keywords": ["fruit", "yellow", "sweet", "potassium", "tropical"],
+    "calories": 105
+  },
+  {
+    "id": "chicken breast",
+    "keywords": ["protein", "meat", "grilled", "lean", "poultry"],
+    "calories": 165
+  },
+  {
+    "id": "rice",
+    "keywords": ["grain", "carbohydrate", "white", "staple", "side dish"],
+    "calories": 130
+  },
+  {
+    "id": "broccoli",
+    "keywords": ["vegetable", "green", "cruciferous", "fiber", "nutrient-rich"],
+    "calories": 55
+  }
+]

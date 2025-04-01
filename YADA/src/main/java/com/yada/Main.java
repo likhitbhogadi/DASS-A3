@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         DietLogManager logManager = new DietLogManager();
-        FoodDatabase foodDatabase = new FoodDatabase();  // Fix: Initialize the food database
+        FoodDatabase foodDatabase = new FoodDatabase(); // Fix: Initialize the food database
         Scanner scanner = new Scanner(System.in);
 
         // Load existing logs (if available)
@@ -31,8 +31,8 @@ public class Main {
         // Sample User Profile (this can be made dynamic later)
         UserProfile user = new UserProfile("Male", 30, 175, 70, "Moderate");
 
-        System.out.println("\nWelcome to YADA - Your Diet Assistant!");
-        System.out.println("Available Commands: ");
+        System.out.println("\nWelcome to YADA - Your Diet Assistant!\n");
+        System.out.println("Available Commands:\n");
         System.out.println("1. add <food_name> <calories> <servings>");
         System.out.println("2. view <date>");
         System.out.println("3. undo");
@@ -57,7 +57,7 @@ public class Main {
                         int calories = Integer.parseInt(parts[2]);
                         int servings = Integer.parseInt(parts[3]);
                         BasicFood food = new BasicFood(foodName, Arrays.asList("user-added"), calories);
-                        logManager.addFoodToLog("2025-03-26", food, servings);  // Static date for now
+                        logManager.addFoodToLog("2025-03-26", food, servings); // Static date for now
                         System.out.println("Added " + servings + " servings of " + foodName);
                     } else {
                         System.out.println("Usage: add <food_name> <calories> <servings>");
@@ -106,7 +106,8 @@ public class Main {
                     if (parts.length >= 3) {
                         String compositeName = parts[1];
                         Map<Food, Integer> components = new HashMap<>();
-                        System.out.println("Enter components in the format <food_name>:<servings>, separated by spaces:");
+                        System.out
+                                .println("Enter components in the format <food_name>:<servings>, separated by spaces:");
                         String[] componentInputs = scanner.nextLine().split(" ");
                         for (String componentInput : componentInputs) {
                             String[] componentParts = componentInput.split(":");
@@ -127,14 +128,15 @@ public class Main {
                         }
 
                         // Create and add composite food
-                        CompositeFood compositeFood = new CompositeFood(compositeName, Arrays.asList("composite"), components);
+                        CompositeFood compositeFood = new CompositeFood(compositeName, Arrays.asList("composite"),
+                                components);
                         foodDatabase.addCompositeFood(compositeFood);
                         System.out.println("Composite food " + compositeName + " created successfully.");
                     } else {
                         System.out.println("Usage: create-composite <composite_name>");
                     }
                     break;
-                
+
                 case "log":
                     if (parts.length == 4) {
                         String date = parts[1];
@@ -206,6 +208,6 @@ public class Main {
                 default:
                     System.out.println("Unknown command. Please try again.");
             }
-        }   
+        }
     }
 }

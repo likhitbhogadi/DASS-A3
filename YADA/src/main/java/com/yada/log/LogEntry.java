@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogEntry {
-    private String date;  // Date in YYYY-MM-DD format
-    private List<Pair<Food, Integer>> consumedFoods;  // Foods and servings
+    private String date; // Date in YYYY-MM-DD format
+    private List<Pair<Food, Integer>> consumedFoods; // Foods and servings
 
     // Constructor
     public LogEntry(String date) {

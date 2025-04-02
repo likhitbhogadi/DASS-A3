@@ -98,18 +98,18 @@ public class CalorieTrackerCLI {
         // System.out.println("Consumed Calories: " + controller.getCurrentDayCalories());
         // System.out.println("Difference: " + controller.getCalorieDifference());
         
-        System.out.println("\n1. View Food Log");
-        System.out.println("2. Update Food Log");
-        System.out.println("3. Add New Basic Food");
-        System.out.println("4. Create Composite Food");
-        System.out.println("5. Search Foods/Add Food to Today's Log");
+        System.out.println("\n1. Search Foods/Add Food to Today's Log");
+        System.out.println("2. View Food Log");
+        System.out.println("3. Update Food Log");
+        System.out.println("4. Add New Basic Food");
+        System.out.println("5. Create Composite Food");
         System.out.println("6. Change Date");
         System.out.println("7. Update User Info");
         System.out.println("8. Change Calorie Calculator");
         System.out.println("9. Undo Last Action");
         System.out.println("10. Save Data");
         System.out.println("11. View Command History");
-        System.out.println("12. View Nutritional Summary for Date");
+        System.out.println("12. View Nutritional Summary");
         System.out.println("0. Exit");
     }
     
@@ -119,19 +119,19 @@ public class CalorieTrackerCLI {
                 exitApplication();
                 break;
             case 1:
-                viewFoodLog();
+                searchFoods();                
                 break;
             case 2:
-                updateFoodLog();
+                viewFoodLog();                
                 break;
             case 3:
-                addBasicFood();
+                updateFoodLog();                
                 break;
             case 4:
-                createCompositeFood();
+                addBasicFood();
                 break;
             case 5:
-                searchFoods();
+                createCompositeFood();                
                 break;
             case 6:
                 changeDate();
@@ -641,11 +641,11 @@ public class CalorieTrackerCLI {
     private void updateUserInfo() {
         System.out.println("\n==== Update User Info ====");
         
-        System.out.println("1. Update gender");
-        System.out.println("2. Update height");
-        System.out.println("3. Update age");
-        System.out.println("4. Update weight");
-        System.out.println("5. Update activity level");
+        // System.out.println("1. Update gender");
+        System.out.println("1. Update height");
+        System.out.println("2. Update age");
+        System.out.println("3. Update weight");
+        System.out.println("4. Update activity level");
         System.out.println("0. Back to main menu");
         
         int choice = getIntInput("Enter your choice: ", 0, 5);
@@ -653,32 +653,32 @@ public class CalorieTrackerCLI {
         switch (choice) {
             case 0:
                 return;
+            // case 1:
+            //     System.out.print("Enter gender (male/female): ");
+            //     String gender = scanner.nextLine().trim().toLowerCase();
+            //     while (!gender.equals("male") && !gender.equals("female")) {
+            //         System.out.print("Invalid input. Enter gender (male/female): ");
+            //         gender = scanner.nextLine().trim().toLowerCase();
+            //     }
+            //     controller.updateUserGender(gender);
+            //     System.out.println("Gender updated successfully.");
+            //     break;
             case 1:
-                System.out.print("Enter gender (male/female): ");
-                String gender = scanner.nextLine().trim().toLowerCase();
-                while (!gender.equals("male") && !gender.equals("female")) {
-                    System.out.print("Invalid input. Enter gender (male/female): ");
-                    gender = scanner.nextLine().trim().toLowerCase();
-                }
-                controller.updateUserGender(gender);
-                System.out.println("Gender updated successfully.");
-                break;
-            case 2:
                 double height = getDoubleInput("Enter new height (cm): ", 50, 250);
                 controller.updateUserHeight(height);
                 System.out.println("Height updated successfully.");
                 break;
-            case 3:
+            case 2:
                 int age = getIntInput("Enter new age: ", 1, 120);
                 controller.updateUserAge(age);
                 System.out.println("Age updated successfully.");
                 break;
-            case 4:
+            case 3:
                 double weight = getDoubleInput("Enter new weight (kg): ", 20, 500);
                 controller.updateUserWeight(weight);
                 System.out.println("Weight updated successfully.");
                 break;
-            case 5:
+            case 4:
                 System.out.println("\nActivity level:");
                 System.out.println("1. Sedentary (little or no exercise)");
                 System.out.println("2. Lightly active (light exercise 1-3 days/week)");

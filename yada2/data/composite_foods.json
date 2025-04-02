@@ -13,12 +13,12 @@
         "servings": 2.0
       },
       {
-        "foodName": "Sweet Potato",
-        "servings": 1.0
-      },
-      {
         "foodName": "Olive Oil",
         "servings": 0.5
+      },
+      {
+        "foodName": "Sweet Potato",
+        "servings": 1.0
       },
       {
         "foodName": "Salmon Fillet",
@@ -36,12 +36,12 @@
     ],
     "components": [
       {
-        "foodName": "Greek Yogurt",
-        "servings": 2.0
-      },
-      {
         "foodName": "Banana",
         "servings": 0.5
+      },
+      {
+        "foodName": "Greek Yogurt",
+        "servings": 2.0
       }
     ]
   },
@@ -55,16 +55,16 @@
     ],
     "components": [
       {
-        "foodName": "Egg",
-        "servings": 1.0
+        "foodName": "Bread Slice",
+        "servings": 2.0
       },
       {
         "foodName": "Avocado",
         "servings": 0.5
       },
       {
-        "foodName": "Bread Slice",
-        "servings": 2.0
+        "foodName": "Egg",
+        "servings": 1.0
       }
     ]
   },
@@ -97,20 +97,20 @@
     ],
     "components": [
       {
-        "foodName": "Broccoli",
-        "servings": 1.0
+        "foodName": "Olive Oil",
+        "servings": 0.5
       },
       {
         "foodName": "Chicken Breast",
         "servings": 1.0
       },
       {
-        "foodName": "Olive Oil",
-        "servings": 0.5
-      },
-      {
         "foodName": "White Rice",
         "servings": 1.5
+      },
+      {
+        "foodName": "Broccoli",
+        "servings": 1.0
       }
     ]
   },
@@ -122,12 +122,12 @@
     ],
     "components": [
       {
-        "foodName": "rice",
-        "servings": 3.0
-      },
-      {
         "foodName": "White Rice",
         "servings": 2.0
+      },
+      {
+        "foodName": "rice",
+        "servings": 3.0
       }
     ]
   }

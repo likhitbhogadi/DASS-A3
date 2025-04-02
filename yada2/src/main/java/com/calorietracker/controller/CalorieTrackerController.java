@@ -87,15 +87,15 @@ public class CalorieTrackerController {
         }
     }
     
-    public void updateUserGender(String gender) {
-        if (user != null) {
-            // Need to create a new user since gender is not modifiable in the User class
-            User newUser = new User(gender, user.getHeight(), user.getAge(), 
-                                  user.getWeight(currentDate), user.getActivityLevel(currentDate));
-            this.user = newUser;
-            profileManager.saveUserProfile(user);
-        }
-    }
+    // public void updateUserGender(String gender) {
+    //     if (user != null) {
+    //         // Need to create a new user since gender is not modifiable in the User class
+    //         User newUser = new User(gender, user.getHeight(), user.getAge(), 
+    //                               user.getWeight(currentDate), user.getActivityLevel(currentDate));
+    //         this.user = newUser;
+    //         profileManager.saveUserProfile(user);
+    //     }
+    // }
     
     // Date methods
     public LocalDate getCurrentDate() {

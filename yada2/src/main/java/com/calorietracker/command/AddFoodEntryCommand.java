@@ -6,7 +6,7 @@ import com.calorietracker.model.Food;
 import com.calorietracker.model.FoodEntry;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 import java.util.List;
 
 public class AddFoodEntryCommand implements Command {
@@ -14,7 +14,7 @@ public class AddFoodEntryCommand implements Command {
     private final LocalDate date;
     private final Food food;
     private final double servings;
-    private FoodEntry addedEntry;
+    // private FoodEntry addedEntry;
     private int addedIndex;
     
     public AddFoodEntryCommand(LogManager logManager, LocalDate date, Food food, double servings) {
@@ -31,7 +31,7 @@ public class AddFoodEntryCommand implements Command {
         // Save the added entry for undo
         DailyLog log = logManager.getOrCreateLog(date);
         List<FoodEntry> entries = log.getEntries();
-        addedEntry = entries.get(entries.size() - 1);
+        // addedEntry = entries.get(entries.size() - 1);
         addedIndex = entries.size() - 1;
     }
     

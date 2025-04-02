@@ -1,5 +1,15 @@
 [
   {
+    "date": "2025-04-03",
+    "entries": [
+      {
+        "foodName": "Egg",
+        "servings": 3.0,
+        "timestamp": "2025-04-02T16:33:22.709672"
+      }
+    ]
+  },
+  {
     "date": "2025-04-02",
     "entries": [
       {

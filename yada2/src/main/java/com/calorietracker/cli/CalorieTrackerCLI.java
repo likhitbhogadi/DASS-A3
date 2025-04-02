@@ -37,7 +37,7 @@ public class CalorieTrackerCLI {
         
         while (running) {
             displayMainMenu();
-            int choice = getIntInput("Enter your choice: ", 0, 13);
+            int choice = getIntInput("Enter your choice: ", 0, 14);
             processMainMenuChoice(choice);
         }
     }
@@ -110,6 +110,7 @@ public class CalorieTrackerCLI {
         System.out.println("11. Save Data");
         System.out.println("12. View Command History");
         System.out.println("13. View All Foods");
+        System.out.println("14. View Nutritional Summary for Date");
         System.out.println("0. Exit");
     }
     
@@ -156,6 +157,9 @@ public class CalorieTrackerCLI {
                 break;
             case 13:
                 viewAllFoods();
+                break;
+            case 14:
+                viewNutritionalSummary();
                 break;
             default:
                 System.out.println("Invalid choice. Please try again.");
@@ -673,6 +677,62 @@ public class CalorieTrackerCLI {
         }
         
         System.out.printf("\nTotal foods in database: %d\n", allFoods.size());
+    }
+    
+    private void viewNutritionalSummary() {
+        System.out.println("\n==== View Nutritional Summary ====");
+        
+        LocalDate summaryDate = promptForDate("Enter date to view summary (YYYY-MM-DD) or press Enter for current date: ");
+        if (summaryDate == null) {
+            return;
+        }
+        
+        // Store current date to restore it later
+        LocalDate originalDate = controller.getCurrentDate();
+        
+        // Temporarily set date to calculate stats
+        controller.setCurrentDate(summaryDate);
+        
+        // Get nutritional information for the requested date
+        DailyLog log = controller.getCurrentDayLog();
+        double consumedCalories = log.getTotalCalories();
+        double targetCalories = controller.getTargetCalories();
+        double difference = targetCalories - consumedCalories;
+        String calculatorName = controller.getCurrentCalculatorName();
+        
+        // Display summary
+        System.out.println("\n=== Nutritional Summary ===");
+        System.out.println("Date: " + summaryDate.format(DateTimeFormatter.ISO_DATE));
+        System.out.println("Calculator: " + calculatorName);
+        System.out.println("Target Calories: " + targetCalories);
+        System.out.println("Consumed Calories: " + consumedCalories);
+        System.out.println("Difference: " + difference);
+        
+        // If there are entries in the log, show a quick breakdown
+        List<FoodEntry> entries = log.getEntries();
+        if (!entries.isEmpty()) {
+            System.out.println("\nFood entries: " + entries.size());
+            
+            // Find highest calorie item
+            FoodEntry highestCalorieEntry = entries.stream()
+                .max(Comparator.comparing(FoodEntry::getTotalCalories))
+                .orElse(null);
+            
+            if (highestCalorieEntry != null) {
+                System.out.println("Highest calorie item: " + 
+                    highestCalorieEntry.getFood().getName() + " (" + 
+                    highestCalorieEntry.getTotalCalories() + " calories)");
+            }
+        }
+        
+        if (difference < 0) {
+            System.out.println("\nYou exceeded your calorie target by " + Math.abs(difference) + " calories.");
+        } else {
+            System.out.println("\nYou have " + difference + " calories remaining for this day.");
+        }
+        
+        // Restore original date
+        controller.setCurrentDate(originalDate);
     }
     
     /**

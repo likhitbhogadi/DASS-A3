@@ -485,7 +485,32 @@ public class CalorieTrackerCLI {
                     System.out.println("No foods found in the database.");
                     return;
                 }
-                System.out.println("\nAll Foods:");
+                
+                // Separate foods into basic and composite
+                List<Food> basicFoods = new ArrayList<>();
+                List<Food> compositeFoods = new ArrayList<>();
+                
+                for (Food food : foods) {
+                    if (food.getClass().getSimpleName().equals("BasicFood")) {
+                        basicFoods.add(food);
+                    } else {
+                        compositeFoods.add(food);
+                    }
+                }
+                
+                System.out.println("\n-- Basic Foods --");
+                for (int i = 0; i < basicFoods.size(); i++) {
+                    System.out.printf("%d. %s\n", i + 1, basicFoods.get(i).getName());
+                }
+                
+                System.out.println("\n-- Composite Foods --");
+                for (int i = 0; i < compositeFoods.size(); i++) {
+                    System.out.printf("%d. %s\n", basicFoods.size() + i + 1, compositeFoods.get(i).getName());
+                }
+                
+                // Merge lists back for selection
+                foods = new ArrayList<>(basicFoods);
+                foods.addAll(compositeFoods);
                 break;
             case 2:
                 // Search by name/keyword
@@ -496,55 +521,98 @@ public class CalorieTrackerCLI {
                     System.out.println("No matching foods found.");
                     return;
                 }
-                System.out.println("\nSearch results:");
+                
+                // Separate search results into basic and composite
+                basicFoods = new ArrayList<>();
+                compositeFoods = new ArrayList<>();
+                
+                for (Food food : foods) {
+                    if (food.getClass().getSimpleName().equals("BasicFood")) {
+                        basicFoods.add(food);
+                    } else {
+                        compositeFoods.add(food);
+                    }
+                }
+                
+                System.out.println("\n-- Basic Foods Matching \"" + searchTerm + "\" --");
+                if (basicFoods.isEmpty()) {
+                    System.out.println("No basic foods found matching your search.");
+                } else {
+                    for (int i = 0; i < basicFoods.size(); i++) {
+                        System.out.printf("%d. %s\n", i + 1, basicFoods.get(i).getName());
+                    }
+                }
+                
+                System.out.println("\n-- Composite Foods Matching \"" + searchTerm + "\" --");
+                if (compositeFoods.isEmpty()) {
+                    System.out.println("No composite foods found matching your search.");
+                } else {
+                    for (int i = 0; i < compositeFoods.size(); i++) {
+                        System.out.printf("%d. %s\n", basicFoods.size() + i + 1, compositeFoods.get(i).getName());
+                    }
+                }
+                
+                // Merge lists back for selection
+                foods = new ArrayList<>(basicFoods);
+                foods.addAll(compositeFoods);
                 break;
         }
         
-        // Display food names in a numbered list
-        for (int i = 0; i < foods.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, foods.get(i).getName());
-        }
-        
-        System.out.println("\nOptions:");
-        System.out.println("1. View details of a specific food");
-        System.out.println("2. Add a food to today's log");
-        System.out.println("0. Return to main menu");
-        
-        choice = getIntInput("Enter your choice: ", 0, 2);
-        
-        switch (choice) {
-            case 0:
-                return;
-            case 1:
-                // View details of a specific food
-                int foodIndex = getIntInput("Enter food number to view details (0 to cancel): ", 0, foods.size()) - 1;
-                if (foodIndex == -1) {
-                    return;
-                }
-                
-                Food selectedFood = foods.get(foodIndex);
-                displayFoodDetails(selectedFood);
-                break;
-            case 2:
-                // Add food to today's log
-                foodIndex = getIntInput("Enter food number to add to log (0 to cancel): ", 0, foods.size()) - 1;
-                if (foodIndex == -1) {
-                    return;
-                }
-                
-                selectedFood = foods.get(foodIndex);
-                double servings = getDoubleInput("Enter number of servings: ", 0.1, 100);
-                
-                controller.addFoodEntry(selectedFood, servings);
-                System.out.printf("Added %.1f serving(s) of %s to today's log.\n", 
-                               servings, selectedFood.getName());
-                break;
+        // Return to this point after viewing food details or adding to log
+        boolean stayInFoodMenu = true;
+        while (stayInFoodMenu && !foods.isEmpty()) {
+            System.out.println("\nOptions:");
+            System.out.println("1. View details of a specific food");
+            System.out.println("2. Add a food to today's log");
+            System.out.println("0. Return to main menu");
+            
+            choice = getIntInput("Enter your choice: ", 0, 2);
+            
+            switch (choice) {
+                case 0:
+                    stayInFoodMenu = false;
+                    break;
+                case 1:
+                    // View details of a specific food
+                    int foodIndex = getIntInput("Enter food number to view details (0 to cancel): ", 0, foods.size()) - 1;
+                    if (foodIndex == -1) {
+                        continue;  // Go back to options instead of returning to main menu
+                    }
+                    
+                    Food selectedFood = foods.get(foodIndex);
+                    displayFoodDetails(selectedFood);
+                    // No return statement here, so it goes back to the options menu
+                    break;
+                case 2:
+                    // Add food to today's log
+                    foodIndex = getIntInput("Enter food number to add to log (0 to cancel): ", 0, foods.size()) - 1;
+                    if (foodIndex == -1) {
+                        continue;  // Go back to options instead of returning to main menu
+                    }
+                    
+                    selectedFood = foods.get(foodIndex);
+                    double servings = getDoubleInput("Enter number of servings: ", 0.1, 100);
+                    
+                    controller.addFoodEntry(selectedFood, servings);
+                    System.out.printf("Added %.1f serving(s) of %s to today's log.\n", 
+                                   servings, selectedFood.getName());
+                    
+                    System.out.println("\nDo you want to add more foods to the log?");
+                    System.out.println("1. Yes");
+                    System.out.println("2. No, return to main menu");
+                    int moreFood = getIntInput("Enter your choice: ", 1, 2);
+                    if (moreFood == 2) {
+                        stayInFoodMenu = false;
+                    }
+                    break;
+            }
         }
     }
     
     private void displayFoodDetails(Food food) {
         System.out.println("\n==== Food Details ====");
         System.out.println("Name: " + food.getName());
+        System.out.println("Type: " + food.getClass().getSimpleName());
         System.out.println("Calories per serving: " + food.getCaloriesPerServing());
         System.out.println("Keywords: " + String.join(", ", food.getKeywords()));
         

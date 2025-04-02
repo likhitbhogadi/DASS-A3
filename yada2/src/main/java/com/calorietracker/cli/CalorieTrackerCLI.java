@@ -92,17 +92,17 @@ public class CalorieTrackerCLI {
         LocalDate currentDate = controller.getCurrentDate();
         
         System.out.println("\n===== Main Menu =====");
-        System.out.println("Current Date: " + currentDate.format(DateTimeFormatter.ISO_DATE));
-        System.out.println("Current Calculator: " + controller.getCurrentCalculatorName());
-        System.out.println("Target Calories: " + controller.getTargetCalories());
-        System.out.println("Consumed Calories: " + controller.getCurrentDayCalories());
-        System.out.println("Difference: " + controller.getCalorieDifference());
+        // System.out.println("Current Date: " + currentDate.format(DateTimeFormatter.ISO_DATE));
+        // System.out.println("Current Calculator: " + controller.getCurrentCalculatorName());
+        // System.out.println("Target Calories: " + controller.getTargetCalories());
+        // System.out.println("Consumed Calories: " + controller.getCurrentDayCalories());
+        // System.out.println("Difference: " + controller.getCalorieDifference());
         
         System.out.println("\n1. View Food Log");
         System.out.println("2. Update Food Log");
         System.out.println("3. Add New Basic Food");
         System.out.println("4. Create Composite Food");
-        System.out.println("5. Search Foods/Add Food to Log");
+        System.out.println("5. Search Foods/Add Food to Today's Log");
         System.out.println("6. Change Date");
         System.out.println("7. Update User Info");
         System.out.println("8. Change Calorie Calculator");
@@ -260,15 +260,7 @@ public class CalorieTrackerCLI {
         
         if (entries.isEmpty()) {
             System.out.println("No entries for this day.");
-            System.out.println("\nOptions:");
-            System.out.println("1. Add new food entry");
-            System.out.println("0. Return to main menu");
-            
-            int choice = getIntInput("Enter your choice: ", 0, 1);
-            
-            if (choice == 1) {
-                addFoodToLog();
-            }
+            System.out.println("\nTo add food entries, please use 'Search Foods/Add Food to Log' from the main menu.");
             
             // Restore original date and return
             controller.setCurrentDate(currentDate);
@@ -285,20 +277,16 @@ public class CalorieTrackerCLI {
         }
         
         System.out.println("\nOptions:");
-        System.out.println("1. Add new food entry");
-        System.out.println("2. Remove a food entry");
-        System.out.println("3. Modify a food entry");
+        System.out.println("1. Remove a food entry");
+        System.out.println("2. Modify a food entry");
         System.out.println("0. Return to main menu");
         
-        int choice = getIntInput("Enter your choice: ", 0, 3);
+        int choice = getIntInput("Enter your choice: ", 0, 2);
         
         switch (choice) {
             case 0:
                 break;
             case 1:
-                addFoodToLog();
-                break;
-            case 2:
                 // Remove food entry
                 int entryIndex = getIntInput("Select entry to remove (0 to cancel): ", 0, entries.size()) - 1;
                 if (entryIndex >= 0) {
@@ -306,7 +294,7 @@ public class CalorieTrackerCLI {
                     System.out.println("Food entry removed successfully.");
                 }
                 break;
-            case 3:
+            case 2:
                 // Modify food entry (remove and add new)
                 entryIndex = getIntInput("Select entry to modify (0 to cancel): ", 0, entries.size()) - 1;
                 if (entryIndex >= 0) {

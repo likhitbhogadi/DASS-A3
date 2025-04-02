@@ -15,6 +15,14 @@ public class CalorieTrackerApp {
         
         // Create and start the CLI application
         CalorieTrackerCLI cli = new CalorieTrackerCLI();
+        
+        // Register shutdown hook to save data before unexpected termination
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("\nApplication is shutting down. Saving data...");
+            cli.saveAllDataBeforeExit();
+            System.out.println("All data saved successfully.");
+        }));
+        
         cli.start();
     }
 }

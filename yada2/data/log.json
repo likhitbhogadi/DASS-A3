@@ -11,6 +11,11 @@
         "foodName": "rice",
         "servings": 3.0,
         "timestamp": "2025-04-02T15:29:07.961870892"
+      },
+      {
+        "foodName": "Peanut Butter",
+        "servings": 3.0,
+        "timestamp": "2025-04-02T15:39:51.968407191"
       }
     ]
   }

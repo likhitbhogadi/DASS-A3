@@ -675,9 +675,18 @@ public class CalorieTrackerCLI {
         System.out.printf("\nTotal foods in database: %d\n", allFoods.size());
     }
     
+    /**
+     * Method to save all data, exposed for shutdown hook
+     */
+    public void saveAllDataBeforeExit() {
+        if (controller != null) {
+            controller.saveAllData();
+        }
+    }
+    
     private void exitApplication() {
         System.out.println("Saving data before exit...");
-        controller.saveAllData();
+        saveAllDataBeforeExit();
         System.out.println("Thank you for using Calorie Tracker!");
         running = false;
     }

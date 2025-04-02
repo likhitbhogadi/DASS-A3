@@ -17,12 +17,12 @@
         "servings": 1.0
       },
       {
-        "foodName": "Olive Oil",
-        "servings": 0.5
-      },
-      {
         "foodName": "Spinach",
         "servings": 2.0
+      },
+      {
+        "foodName": "Olive Oil",
+        "servings": 0.5
       }
     ]
   },
@@ -59,12 +59,12 @@
         "servings": 0.5
       },
       {
-        "foodName": "Bread Slice",
-        "servings": 2.0
-      },
-      {
         "foodName": "Egg",
         "servings": 1.0
+      },
+      {
+        "foodName": "Bread Slice",
+        "servings": 2.0
       }
     ]
   },
@@ -101,11 +101,11 @@
         "servings": 1.5
       },
       {
-        "foodName": "Broccoli",
+        "foodName": "Chicken Breast",
         "servings": 1.0
       },
       {
-        "foodName": "Chicken Breast",
+        "foodName": "Broccoli",
         "servings": 1.0
       },
       {

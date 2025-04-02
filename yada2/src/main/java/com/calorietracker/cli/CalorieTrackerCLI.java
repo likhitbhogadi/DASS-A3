@@ -38,7 +38,7 @@ public class CalorieTrackerCLI {
         
         while (running) {
             displayMainMenu();
-            int choice = getIntInput("Enter your choice: ", 0, 13);
+            int choice = getIntInput("Enter your choice: ", 0, 12);
             processMainMenuChoice(choice);
         }
     }
@@ -98,19 +98,18 @@ public class CalorieTrackerCLI {
         System.out.println("Consumed Calories: " + controller.getCurrentDayCalories());
         System.out.println("Difference: " + controller.getCalorieDifference());
         
-        System.out.println("\n1. Add Food to Today's Log");
-        System.out.println("2. View Food Log");
-        System.out.println("3. Update Food Log");
-        System.out.println("4. Add New Basic Food");
-        System.out.println("5. Create Composite Food");
-        System.out.println("6. Search Foods");
-        System.out.println("7. Change Date");
-        System.out.println("8. Update User Info");
-        System.out.println("9. Change Calorie Calculator");
-        System.out.println("10. Undo Last Action");
-        System.out.println("11. Save Data");
-        System.out.println("12. View Command History");
-        System.out.println("13. View Nutritional Summary for Date");
+        System.out.println("\n1. View Food Log");
+        System.out.println("2. Update Food Log");
+        System.out.println("3. Add New Basic Food");
+        System.out.println("4. Create Composite Food");
+        System.out.println("5. Search Foods/Add Food to Log");
+        System.out.println("6. Change Date");
+        System.out.println("7. Update User Info");
+        System.out.println("8. Change Calorie Calculator");
+        System.out.println("9. Undo Last Action");
+        System.out.println("10. Save Data");
+        System.out.println("11. View Command History");
+        System.out.println("12. View Nutritional Summary for Date");
         System.out.println("0. Exit");
     }
     
@@ -120,42 +119,39 @@ public class CalorieTrackerCLI {
                 exitApplication();
                 break;
             case 1:
-                addFoodToLog();
-                break;
-            case 2:
                 viewFoodLog();
                 break;
-            case 3:
+            case 2:
                 updateFoodLog();
                 break;
-            case 4:
+            case 3:
                 addBasicFood();
                 break;
-            case 5:
+            case 4:
                 createCompositeFood();
                 break;
-            case 6:
+            case 5:
                 searchFoods();
                 break;
-            case 7:
+            case 6:
                 changeDate();
                 break;
-            case 8:
+            case 7:
                 updateUserInfo();
                 break;
-            case 9:
+            case 8:
                 changeCalorieCalculator();
                 break;
-            case 10:
+            case 9:
                 undoLastAction();
                 break;
-            case 11:
+            case 10:
                 saveData();
                 break;
-            case 12:
+            case 11:
                 viewCommandHistory();
                 break;
-            case 13:
+            case 12:
                 viewNutritionalSummary();
                 break;
             default:

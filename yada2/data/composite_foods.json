@@ -9,20 +9,20 @@
     ],
     "components": [
       {
-        "foodName": "Spinach",
-        "servings": 2.0
+        "foodName": "Olive Oil",
+        "servings": 0.5
       },
       {
-        "foodName": "Sweet Potato",
-        "servings": 1.0
+        "foodName": "Spinach",
+        "servings": 2.0
       },
       {
         "foodName": "Salmon Fillet",
         "servings": 1.0
       },
       {
-        "foodName": "Olive Oil",
-        "servings": 0.5
+        "foodName": "Sweet Potato",
+        "servings": 1.0
       }
     ]
   },
@@ -55,12 +55,12 @@
     ],
     "components": [
       {
-        "foodName": "Egg",
-        "servings": 1.0
-      },
-      {
         "foodName": "Bread Slice",
         "servings": 2.0
+      },
+      {
+        "foodName": "Egg",
+        "servings": 1.0
       },
       {
         "foodName": "Avocado",
@@ -97,8 +97,8 @@
     ],
     "components": [
       {
-        "foodName": "Chicken Breast",
-        "servings": 1.0
+        "foodName": "Olive Oil",
+        "servings": 0.5
       },
       {
         "foodName": "Broccoli",
@@ -109,8 +109,8 @@
         "servings": 1.5
       },
       {
-        "foodName": "Olive Oil",
-        "servings": 0.5
+        "foodName": "Chicken Breast",
+        "servings": 1.0
       }
     ]
   },

@@ -1,0 +1,185 @@
+[
+  {
+    "name": "Bread Slice",
+    "calories": 80.0,
+    "keywords": [
+      "grain",
+      "carb",
+      "sandwich"
+    ]
+  },
+  {
+    "name": "Greek Yogurt",
+    "calories": 59.0,
+    "keywords": [
+      "dairy",
+      "protein",
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "name": "Whole Milk",
+    "calories": 61.0,
+    "keywords": [
+      "dairy",
+      "drink",
+      "calcium"
+    ]
+  },
+  {
+    "name": "Peanut Butter",
+    "calories": 94.0,
+    "keywords": [
+      "spread",
+      "protein",
+      "fat",
+      "sandwich"
+    ]
+  },
+  {
+    "name": "White Rice",
+    "calories": 130.0,
+    "keywords": [
+      "grain",
+      "carb",
+      "dinner",
+      "side dish"
+    ]
+  },
+  {
+    "name": "Egg",
+    "calories": 72.0,
+    "keywords": [
+      "protein",
+      "breakfast",
+      "keto"
+    ]
+  },
+  {
+    "name": "Salmon Fillet",
+    "calories": 208.0,
+    "keywords": [
+      "fish",
+      "protein",
+      "omega-3",
+      "dinner"
+    ]
+  },
+  {
+    "name": "Olive Oil",
+    "calories": 119.0,
+    "keywords": [
+      "oil",
+      "fat",
+      "cooking",
+      "dressing"
+    ]
+  },
+  {
+    "name": "Almonds",
+    "calories": 576.0,
+    "keywords": [
+      "nut",
+      "snack",
+      "healthy fat"
+    ]
+  },
+  {
+    "name": "Quinoa",
+    "calories": 120.0,
+    "keywords": [
+      "grain",
+      "carb",
+      "dinner",
+      "side dish"
+    ]
+  },
+  {
+    "name": "Carrot",
+    "calories": 41.0,
+    "keywords": [
+      "vegetable",
+      "snack",
+      "fiber"
+    ]
+  },
+  {
+    "name": "Cucumber",
+    "calories": 16.0,
+    "keywords": [
+      "vegetable",
+      "salad",
+      "low-calorie"
+    ]
+  },
+  {
+    "name": "Banana",
+    "calories": 89.0,
+    "keywords": [
+      "fruit",
+      "snack",
+      "potassium"
+    ]
+  },
+  {
+    "name": "Sweet Potato",
+    "calories": 86.0,
+    "keywords": [
+      "vegetable",
+      "carb",
+      "dinner",
+      "side dish"
+    ]
+  },
+  {
+    "name": "Apple",
+    "calories": 52.0,
+    "keywords": [
+      "fruit",
+      "snack",
+      "sweet"
+    ]
+  },
+  {
+    "name": "Broccoli",
+    "calories": 34.0,
+    "keywords": [
+      "vegetable",
+      "green",
+      "fiber",
+      "side dish"
+    ]
+  },
+  {
+    "name": "Avocado",
+    "calories": 160.0,
+    "keywords": [
+      "fruit",
+      "healthy fat",
+      "guacamole",
+      "toast"
+    ]
+  },
+  {
+    "name": "Spinach",
+    "calories": 7.0,
+    "keywords": [
+      "vegetable",
+      "green",
+      "salad",
+      "iron"
+    ]
+  },
+  {
+    "name": "Chicken Breast",
+    "calories": 165.0,
+    "keywords": [
+      "meat",
+      "protein",
+      "dinner",
+      "poultry",
+      "lean"
+    ]
+  }
+]

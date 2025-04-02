@@ -163,6 +163,10 @@ public class CalorieTrackerController {
         return logManager.getOrCreateLog(currentDate);
     }
     
+    public DailyLog getDailyLog(LocalDate date) {
+        return logManager.getOrCreateLog(date);
+    }
+    
     public double getCurrentDayCalories() {
         return getCurrentDayLog().getTotalCalories();
     }

@@ -98,8 +98,8 @@ public class CalorieTrackerCLI {
         System.out.println("Difference: " + controller.getCalorieDifference());
         
         System.out.println("\n1. Add Food to Today's Log");
-        System.out.println("2. View Today's Food Log");
-        System.out.println("3. Remove Food from Today's Log");
+        System.out.println("2. View Food Log");
+        System.out.println("3. Update Food Log");
         System.out.println("4. Add New Basic Food");
         System.out.println("5. Create Composite Food");
         System.out.println("6. Search Foods");
@@ -122,10 +122,10 @@ public class CalorieTrackerCLI {
                 addFoodToLog();
                 break;
             case 2:
-                viewDailyLog();
+                viewFoodLog();
                 break;
             case 3:
-                removeFoodFromLog();
+                updateFoodLog();
                 break;
             case 4:
                 addBasicFood();
@@ -201,10 +201,18 @@ public class CalorieTrackerCLI {
                          servings, selectedFood.getName());
     }
     
-    private void viewDailyLog() {
-        System.out.println("\n==== Daily Log (" + controller.getCurrentDate() + ") ====");
-        DailyLog log = controller.getCurrentDayLog();
+    private void viewFoodLog() {
+        System.out.println("\n==== View Food Log ====");
+        
+        LocalDate logDate = promptForDate("Enter date to view (YYYY-MM-DD) or press Enter for current date: ");
+        if (logDate == null) {
+            return;
+        }
+        
+        DailyLog log = controller.getDailyLog(logDate);
         List<FoodEntry> entries = log.getEntries();
+        
+        System.out.println("\n==== Food Log for " + logDate.format(DateTimeFormatter.ISO_DATE) + " ====");
         
         if (entries.isEmpty()) {
             System.out.println("No entries for this day.");
@@ -223,22 +231,54 @@ public class CalorieTrackerCLI {
                              i + 1, entry.getFood().getName(), entry.getServings(), entryCalories);
         }
         
+        // Set controller date to selected date to ensure target calculations use correct data
+        LocalDate currentDate = controller.getCurrentDate(); // save current date
+        controller.setCurrentDate(logDate);
+        
+        double targetCalories = controller.getTargetCalories();
         System.out.println("\nTotal calories consumed: " + totalCalories);
-        System.out.println("Target calories: " + controller.getTargetCalories());
-        System.out.println("Difference: " + controller.getCalorieDifference());
+        System.out.println("Target calories: " + targetCalories);
+        System.out.println("Difference: " + (targetCalories - totalCalories));
+        
+        controller.setCurrentDate(currentDate); // restore current date
     }
     
-    private void removeFoodFromLog() {
-        System.out.println("\n==== Remove Food from Log ====");
-        DailyLog log = controller.getCurrentDayLog();
-        List<FoodEntry> entries = log.getEntries();
+    private void updateFoodLog() {
+        System.out.println("\n==== Update Food Log ====");
         
-        if (entries.isEmpty()) {
-            System.out.println("No entries to remove for this day.");
+        LocalDate logDate = promptForDate("Enter date to update (YYYY-MM-DD) or press Enter for current date: ");
+        if (logDate == null) {
             return;
         }
         
-        // Display entries
+        // Store current date in case we need to restore it
+        LocalDate currentDate = controller.getCurrentDate();
+        
+        // Temporarily set controller date to the selected log date
+        controller.setCurrentDate(logDate);
+        DailyLog log = controller.getCurrentDayLog();
+        List<FoodEntry> entries = log.getEntries();
+        
+        System.out.println("\n==== Food Log for " + logDate.format(DateTimeFormatter.ISO_DATE) + " ====");
+        
+        if (entries.isEmpty()) {
+            System.out.println("No entries for this day.");
+            System.out.println("\nOptions:");
+            System.out.println("1. Add new food entry");
+            System.out.println("0. Return to main menu");
+            
+            int choice = getIntInput("Enter your choice: ", 0, 1);
+            
+            if (choice == 1) {
+                addFoodToLog();
+            }
+            
+            // Restore original date and return
+            controller.setCurrentDate(currentDate);
+            return;
+        }
+        
+        // Display all entries
         System.out.println("Current entries:");
         for (int i = 0; i < entries.size(); i++) {
             FoodEntry entry = entries.get(i);
@@ -247,16 +287,67 @@ public class CalorieTrackerCLI {
                              entry.getTotalCalories());
         }
         
-        // Select entry to remove
-        int entryIndex = getIntInput("Select entry to remove (0 to cancel): ", 0, entries.size()) - 1;
-        if (entryIndex == -1) {
-            System.out.println("Operation cancelled.");
-            return;
+        System.out.println("\nOptions:");
+        System.out.println("1. Add new food entry");
+        System.out.println("2. Remove a food entry");
+        System.out.println("3. Modify a food entry");
+        System.out.println("0. Return to main menu");
+        
+        int choice = getIntInput("Enter your choice: ", 0, 3);
+        
+        switch (choice) {
+            case 0:
+                break;
+            case 1:
+                addFoodToLog();
+                break;
+            case 2:
+                // Remove food entry
+                int entryIndex = getIntInput("Select entry to remove (0 to cancel): ", 0, entries.size()) - 1;
+                if (entryIndex >= 0) {
+                    controller.removeFoodEntry(entryIndex);
+                    System.out.println("Food entry removed successfully.");
+                }
+                break;
+            case 3:
+                // Modify food entry (remove and add new)
+                entryIndex = getIntInput("Select entry to modify (0 to cancel): ", 0, entries.size()) - 1;
+                if (entryIndex >= 0) {
+                    FoodEntry oldEntry = entries.get(entryIndex);
+                    Food selectedFood = oldEntry.getFood();
+                    
+                    // Get new serving amount
+                    double newServings = getDoubleInput(
+                        String.format("Enter new servings for %s (current: %.1f): ", 
+                                     selectedFood.getName(), oldEntry.getServings()), 
+                        0.1, 100);
+                    
+                    // Remove old entry and add new one
+                    controller.removeFoodEntry(entryIndex);
+                    controller.addFoodEntry(selectedFood, newServings);
+                    System.out.println("Food entry updated successfully.");
+                }
+                break;
         }
         
-        // Remove entry
-        controller.removeFoodEntry(entryIndex);
-        System.out.println("Food entry removed successfully.");
+        // Restore original date
+        controller.setCurrentDate(currentDate);
+    }
+    
+    private LocalDate promptForDate(String prompt) {
+        System.out.print(prompt);
+        String dateInput = scanner.nextLine().trim();
+        
+        if (dateInput.isEmpty()) {
+            return controller.getCurrentDate();
+        }
+        
+        try {
+            return LocalDate.parse(dateInput);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            return null;
+        }
     }
     
     private void addBasicFood() {

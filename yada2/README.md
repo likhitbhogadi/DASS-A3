@@ -73,17 +73,18 @@ A command-line Java application for tracking daily calorie intake, managing food
 1. **Clone the repository**
    ```
    git clone <repository-url>
+   cd DASS-A3
    cd yada2
    ```
 
-2. **Compile the application**
+2. **Make the script executable**
    ```
-   mvn clean compile
+   chmod +x yada.sh
    ```
 
-3. **Run the application**
+3. **Compile and run the application**
    ```
-   mvn exec:java -Dexec.mainClass="com.calorietracker.CalorieTrackerApp"
+   ./yada.sh
    ```
 
    Alternatively, you can run the JAR directly:

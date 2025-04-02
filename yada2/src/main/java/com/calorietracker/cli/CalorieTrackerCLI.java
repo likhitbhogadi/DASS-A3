@@ -1,6 +1,7 @@
 package com.calorietracker.cli;
 
 import com.calorietracker.controller.CalorieTrackerController;
+import com.calorietracker.model.CompositeFood;
 import com.calorietracker.model.DailyLog;
 import com.calorietracker.model.Food;
 import com.calorietracker.model.FoodEntry;
@@ -37,7 +38,7 @@ public class CalorieTrackerCLI {
         
         while (running) {
             displayMainMenu();
-            int choice = getIntInput("Enter your choice: ", 0, 14);
+            int choice = getIntInput("Enter your choice: ", 0, 13);
             processMainMenuChoice(choice);
         }
     }
@@ -109,8 +110,7 @@ public class CalorieTrackerCLI {
         System.out.println("10. Undo Last Action");
         System.out.println("11. Save Data");
         System.out.println("12. View Command History");
-        System.out.println("13. View All Foods");
-        System.out.println("14. View Nutritional Summary for Date");
+        System.out.println("13. View Nutritional Summary for Date");
         System.out.println("0. Exit");
     }
     
@@ -156,9 +156,6 @@ public class CalorieTrackerCLI {
                 viewCommandHistory();
                 break;
             case 13:
-                viewAllFoods();
-                break;
-            case 14:
                 viewNutritionalSummary();
                 break;
             default:
@@ -468,23 +465,102 @@ public class CalorieTrackerCLI {
     
     private void searchFoods() {
         System.out.println("\n==== Search Foods ====");
+        System.out.println("1. View all foods");
+        System.out.println("2. Search by name/keyword");
+        System.out.println("0. Return to main menu");
         
-        System.out.print("Enter search term: ");
-        String searchTerm = scanner.nextLine().trim();
+        int choice = getIntInput("Enter your choice: ", 0, 2);
         
-        List<Food> foods = controller.searchFoods(searchTerm);
+        List<Food> foods = new ArrayList<>();
         
-        if (foods.isEmpty()) {
-            System.out.println("No matching foods found.");
-            return;
+        switch (choice) {
+            case 0:
+                return;
+            case 1:
+                // View all foods
+                foods = controller.getAllFoods();
+                // Sort foods alphabetically by name
+                foods.sort(Comparator.comparing(Food::getName));
+                if (foods.isEmpty()) {
+                    System.out.println("No foods found in the database.");
+                    return;
+                }
+                System.out.println("\nAll Foods:");
+                break;
+            case 2:
+                // Search by name/keyword
+                System.out.print("Enter search term: ");
+                String searchTerm = scanner.nextLine().trim();
+                foods = controller.searchFoods(searchTerm);
+                if (foods.isEmpty()) {
+                    System.out.println("No matching foods found.");
+                    return;
+                }
+                System.out.println("\nSearch results:");
+                break;
         }
         
-        System.out.println("\nSearch results:");
-        for (Food food : foods) {
-            System.out.printf("%s - %.2f calories per serving - Keywords: %s\n", 
-                             food.getName(), food.getCaloriesPerServing(), 
-                             String.join(", ", food.getKeywords()));
+        // Display food names in a numbered list
+        for (int i = 0; i < foods.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, foods.get(i).getName());
         }
+        
+        System.out.println("\nOptions:");
+        System.out.println("1. View details of a specific food");
+        System.out.println("2. Add a food to today's log");
+        System.out.println("0. Return to main menu");
+        
+        choice = getIntInput("Enter your choice: ", 0, 2);
+        
+        switch (choice) {
+            case 0:
+                return;
+            case 1:
+                // View details of a specific food
+                int foodIndex = getIntInput("Enter food number to view details (0 to cancel): ", 0, foods.size()) - 1;
+                if (foodIndex == -1) {
+                    return;
+                }
+                
+                Food selectedFood = foods.get(foodIndex);
+                displayFoodDetails(selectedFood);
+                break;
+            case 2:
+                // Add food to today's log
+                foodIndex = getIntInput("Enter food number to add to log (0 to cancel): ", 0, foods.size()) - 1;
+                if (foodIndex == -1) {
+                    return;
+                }
+                
+                selectedFood = foods.get(foodIndex);
+                double servings = getDoubleInput("Enter number of servings: ", 0.1, 100);
+                
+                controller.addFoodEntry(selectedFood, servings);
+                System.out.printf("Added %.1f serving(s) of %s to today's log.\n", 
+                               servings, selectedFood.getName());
+                break;
+        }
+    }
+    
+    private void displayFoodDetails(Food food) {
+        System.out.println("\n==== Food Details ====");
+        System.out.println("Name: " + food.getName());
+        System.out.println("Calories per serving: " + food.getCaloriesPerServing());
+        System.out.println("Keywords: " + String.join(", ", food.getKeywords()));
+        
+        if (food.getClass().getSimpleName().equals("CompositeFood")) {
+            System.out.println("\nComponents:");
+            Map<Food, Double> components = ((CompositeFood) food).getComponents();
+            int i = 1;
+            for (Map.Entry<Food, Double> entry : components.entrySet()) {
+                System.out.printf("  %d. %s - %.1f serving(s) - %.2f calories\n", 
+                                i++, entry.getKey().getName(), entry.getValue(),
+                                entry.getKey().getCaloriesPerServing() * entry.getValue());
+            }
+        }
+        
+        System.out.print("\nPress Enter to continue...");
+        scanner.nextLine();
     }
     
     private void changeDate() {
@@ -630,53 +706,6 @@ public class CalorieTrackerCLI {
         for (int i = history.size() - 1; i >= 0; i--) {
             System.out.printf("%d. %s\n", history.size() - i, history.get(i));
         }
-    }
-    
-    private void viewAllFoods() {
-        System.out.println("\n==== All Foods in Database ====");
-        List<Food> allFoods = controller.getAllFoods();
-        
-        if (allFoods.isEmpty()) {
-            System.out.println("No foods found in the database.");
-            return;
-        }
-        
-        // Sort foods alphabetically by name
-        allFoods.sort(Comparator.comparing(Food::getName));
-        
-        // Display basic foods first
-        System.out.println("\n-- Basic Foods --");
-        boolean hasBasicFoods = false;
-        for (Food food : allFoods) {
-            if (food.getClass().getSimpleName().equals("BasicFood")) {
-                hasBasicFoods = true;
-                System.out.printf("%s - %.2f calories per serving - Keywords: %s\n", 
-                                food.getName(), food.getCaloriesPerServing(), 
-                                String.join(", ", food.getKeywords()));
-            }
-        }
-        
-        if (!hasBasicFoods) {
-            System.out.println("No basic foods found.");
-        }
-        
-        // Then display composite foods
-        System.out.println("\n-- Composite Foods --");
-        boolean hasCompositeFoods = false;
-        for (Food food : allFoods) {
-            if (food.getClass().getSimpleName().equals("CompositeFood")) {
-                hasCompositeFoods = true;
-                System.out.printf("%s - %.2f calories per serving - Keywords: %s\n", 
-                                food.getName(), food.getCaloriesPerServing(), 
-                                String.join(", ", food.getKeywords()));
-            }
-        }
-        
-        if (!hasCompositeFoods) {
-            System.out.println("No composite foods found.");
-        }
-        
-        System.out.printf("\nTotal foods in database: %d\n", allFoods.size());
     }
     
     private void viewNutritionalSummary() {

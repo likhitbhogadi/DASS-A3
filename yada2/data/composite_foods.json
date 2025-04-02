@@ -78,11 +78,11 @@
     ],
     "components": [
       {
-        "foodName": "Bread Slice",
+        "foodName": "Peanut Butter",
         "servings": 2.0
       },
       {
-        "foodName": "Peanut Butter",
+        "foodName": "Bread Slice",
         "servings": 2.0
       }
     ]
@@ -122,12 +122,12 @@
     ],
     "components": [
       {
-        "foodName": "rice",
-        "servings": 3.0
-      },
-      {
         "foodName": "White Rice",
         "servings": 2.0
+      },
+      {
+        "foodName": "rice",
+        "servings": 3.0
       }
     ]
   }

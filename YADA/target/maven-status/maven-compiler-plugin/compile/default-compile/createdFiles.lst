@@ -4,7 +4,7 @@ com/yada/log/DietLogManager.class
 com/yada/profile/CalorieCalculator.class
 com/yada/food/BasicFood.class
 com/yada/log/LogEntry.class
-com/yada/db/FoodDatabase.class
 com/yada/profile/UserProfile.class
+com/yada/db/FoodDatabase.class
 com/yada/food/CompositeFood.class
 com/yada/util/Pair.class

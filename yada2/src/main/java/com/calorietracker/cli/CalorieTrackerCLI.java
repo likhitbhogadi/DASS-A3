@@ -37,7 +37,7 @@ public class CalorieTrackerCLI {
         
         while (running) {
             displayMainMenu();
-            int choice = getIntInput("Enter your choice: ", 0, 12);
+            int choice = getIntInput("Enter your choice: ", 0, 13);
             processMainMenuChoice(choice);
         }
     }
@@ -109,6 +109,7 @@ public class CalorieTrackerCLI {
         System.out.println("10. Undo Last Action");
         System.out.println("11. Save Data");
         System.out.println("12. View Command History");
+        System.out.println("13. View All Foods");
         System.out.println("0. Exit");
     }
     
@@ -152,6 +153,9 @@ public class CalorieTrackerCLI {
                 break;
             case 12:
                 viewCommandHistory();
+                break;
+            case 13:
+                viewAllFoods();
                 break;
             default:
                 System.out.println("Invalid choice. Please try again.");
@@ -531,6 +535,53 @@ public class CalorieTrackerCLI {
         for (int i = history.size() - 1; i >= 0; i--) {
             System.out.printf("%d. %s\n", history.size() - i, history.get(i));
         }
+    }
+    
+    private void viewAllFoods() {
+        System.out.println("\n==== All Foods in Database ====");
+        List<Food> allFoods = controller.getAllFoods();
+        
+        if (allFoods.isEmpty()) {
+            System.out.println("No foods found in the database.");
+            return;
+        }
+        
+        // Sort foods alphabetically by name
+        allFoods.sort(Comparator.comparing(Food::getName));
+        
+        // Display basic foods first
+        System.out.println("\n-- Basic Foods --");
+        boolean hasBasicFoods = false;
+        for (Food food : allFoods) {
+            if (food.getClass().getSimpleName().equals("BasicFood")) {
+                hasBasicFoods = true;
+                System.out.printf("%s - %.2f calories per serving - Keywords: %s\n", 
+                                food.getName(), food.getCaloriesPerServing(), 
+                                String.join(", ", food.getKeywords()));
+            }
+        }
+        
+        if (!hasBasicFoods) {
+            System.out.println("No basic foods found.");
+        }
+        
+        // Then display composite foods
+        System.out.println("\n-- Composite Foods --");
+        boolean hasCompositeFoods = false;
+        for (Food food : allFoods) {
+            if (food.getClass().getSimpleName().equals("CompositeFood")) {
+                hasCompositeFoods = true;
+                System.out.printf("%s - %.2f calories per serving - Keywords: %s\n", 
+                                food.getName(), food.getCaloriesPerServing(), 
+                                String.join(", ", food.getKeywords()));
+            }
+        }
+        
+        if (!hasCompositeFoods) {
+            System.out.println("No composite foods found.");
+        }
+        
+        System.out.printf("\nTotal foods in database: %d\n", allFoods.size());
     }
     
     private void exitApplication() {

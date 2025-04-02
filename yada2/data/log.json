@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "date": "2025-04-02",
+    "entries": [
+      {
+        "foodName": "Greek Yogurt",
+        "servings": 3.0,
+        "timestamp": "2025-04-02T15:10:06.114840804"
+      }
+    ]
+  }
+]

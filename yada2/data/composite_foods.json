@@ -101,12 +101,12 @@
         "servings": 1.0
       },
       {
-        "foodName": "White Rice",
-        "servings": 1.5
-      },
-      {
         "foodName": "Olive Oil",
         "servings": 0.5
+      },
+      {
+        "foodName": "White Rice",
+        "servings": 1.5
       },
       {
         "foodName": "Chicken Breast",

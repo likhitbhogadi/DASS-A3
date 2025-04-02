@@ -15,15 +15,17 @@ import java.util.Optional;
 public class CalorieTrackerController {
     private final FoodDatabase foodDatabase;
     private final LogManager logManager;
+    private final ProfileManager profileManager;
     private final CommandInvoker commandInvoker;
     private User user;
     private LocalDate currentDate;
     private CalorieCalculator currentCalculator;
     private final Map<String, CalorieCalculator> calculators;
     
-    public CalorieTrackerController(String basicFoodsPath, String compositeFoodsPath, String logPath) {
+    public CalorieTrackerController(String basicFoodsPath, String compositeFoodsPath, String logPath, String profilePath) {
         this.foodDatabase = new JsonFoodDatabase(basicFoodsPath, compositeFoodsPath);
         this.logManager = new LogManager(logPath, foodDatabase);
+        this.profileManager = new ProfileManager(profilePath);
         this.commandInvoker = new CommandInvoker();
         this.currentDate = LocalDate.now();
         
@@ -36,11 +38,15 @@ public class CalorieTrackerController {
         // Load data
         foodDatabase.load();
         logManager.load();
+        
+        // Try to load user profile
+        this.user = profileManager.loadUserProfile();
     }
     
     // User methods
     public void createUser(String gender, double height, int age, double weight, User.ActivityLevel activityLevel) {
         user = new User(gender, height, age, weight, activityLevel);
+        profileManager.saveUserProfile(user);
     }
     
     public User getUser() {
@@ -50,12 +56,44 @@ public class CalorieTrackerController {
     public void updateUserWeight(double weight) {
         if (user != null) {
             user.setWeight(currentDate, weight);
+            profileManager.saveUserProfile(user);
         }
     }
     
     public void updateUserActivityLevel(User.ActivityLevel activityLevel) {
         if (user != null) {
             user.setActivityLevel(currentDate, activityLevel);
+            profileManager.saveUserProfile(user);
+        }
+    }
+    
+    public void updateUserHeight(double height) {
+        if (user != null) {
+            // Need to create a new user since height is not modifiable in the User class
+            User newUser = new User(user.getGender(), height, user.getAge(), 
+                                  user.getWeight(currentDate), user.getActivityLevel(currentDate));
+            this.user = newUser;
+            profileManager.saveUserProfile(user);
+        }
+    }
+    
+    public void updateUserAge(int age) {
+        if (user != null) {
+            // Need to create a new user since age is not modifiable in the User class
+            User newUser = new User(user.getGender(), user.getHeight(), age, 
+                                  user.getWeight(currentDate), user.getActivityLevel(currentDate));
+            this.user = newUser;
+            profileManager.saveUserProfile(user);
+        }
+    }
+    
+    public void updateUserGender(String gender) {
+        if (user != null) {
+            // Need to create a new user since gender is not modifiable in the User class
+            User newUser = new User(gender, user.getHeight(), user.getAge(), 
+                                  user.getWeight(currentDate), user.getActivityLevel(currentDate));
+            this.user = newUser;
+            profileManager.saveUserProfile(user);
         }
     }
     
@@ -165,5 +203,8 @@ public class CalorieTrackerController {
     public void saveAllData() {
         foodDatabase.save();
         logManager.save();
+        if (user != null) {
+            profileManager.saveUserProfile(user);
+        }
     }
 }

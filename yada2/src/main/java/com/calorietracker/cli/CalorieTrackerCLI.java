@@ -22,8 +22,9 @@ public class CalorieTrackerCLI {
         String basicFoodsPath = userDir + "/data/basic_foods.json";
         String compositeFoodsPath = userDir + "/data/composite_foods.json";
         String logPath = userDir + "/data/log.json";
+        String profilePath = userDir + "/data/user_profile.json";
         
-        controller = new CalorieTrackerController(basicFoodsPath, compositeFoodsPath, logPath);
+        controller = new CalorieTrackerController(basicFoodsPath, compositeFoodsPath, logPath, profilePath);
     }
     
     public void start() {
@@ -413,21 +414,44 @@ public class CalorieTrackerCLI {
     private void updateUserInfo() {
         System.out.println("\n==== Update User Info ====");
         
-        System.out.println("1. Update weight");
-        System.out.println("2. Update activity level");
+        System.out.println("1. Update gender");
+        System.out.println("2. Update height");
+        System.out.println("3. Update age");
+        System.out.println("4. Update weight");
+        System.out.println("5. Update activity level");
         System.out.println("0. Back to main menu");
         
-        int choice = getIntInput("Enter your choice: ", 0, 2);
+        int choice = getIntInput("Enter your choice: ", 0, 5);
         
         switch (choice) {
             case 0:
                 return;
             case 1:
+                System.out.print("Enter gender (male/female): ");
+                String gender = scanner.nextLine().trim().toLowerCase();
+                while (!gender.equals("male") && !gender.equals("female")) {
+                    System.out.print("Invalid input. Enter gender (male/female): ");
+                    gender = scanner.nextLine().trim().toLowerCase();
+                }
+                controller.updateUserGender(gender);
+                System.out.println("Gender updated successfully.");
+                break;
+            case 2:
+                double height = getDoubleInput("Enter new height (cm): ", 50, 250);
+                controller.updateUserHeight(height);
+                System.out.println("Height updated successfully.");
+                break;
+            case 3:
+                int age = getIntInput("Enter new age: ", 1, 120);
+                controller.updateUserAge(age);
+                System.out.println("Age updated successfully.");
+                break;
+            case 4:
                 double weight = getDoubleInput("Enter new weight (kg): ", 20, 500);
                 controller.updateUserWeight(weight);
                 System.out.println("Weight updated successfully.");
                 break;
-            case 2:
+            case 5:
                 System.out.println("\nActivity level:");
                 System.out.println("1. Sedentary (little or no exercise)");
                 System.out.println("2. Lightly active (light exercise 1-3 days/week)");

@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Represents a composite food item that consists of multiple food items.
+ * Each component food item can have a specified number of servings.
+ */
 public class CompositeFood extends Food {
     private Map<Food, Double> components; // Food and servings
     

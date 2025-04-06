@@ -1,12 +1,7 @@
 [
   {
     "name": "Salmon Dinner",
-    "keywords": [
-      "dinner",
-      "healthy",
-      "protein",
-      "omega-3"
-    ],
+    "keywords": ["dinner", "healthy", "protein", "omega-3"],
     "components": [
       {
         "foodName": "Sweet Potato",
@@ -28,12 +23,7 @@
   },
   {
     "name": "Greek Yogurt Parfait",
-    "keywords": [
-      "breakfast",
-      "healthy",
-      "protein",
-      "snack"
-    ],
+    "keywords": ["breakfast", "healthy", "protein", "snack"],
     "components": [
       {
         "foodName": "Greek Yogurt",
@@ -47,12 +37,7 @@
   },
   {
     "name": "Avocado Toast",
-    "keywords": [
-      "breakfast",
-      "trendy",
-      "healthy fats",
-      "vegetarian"
-    ],
+    "keywords": ["breakfast", "trendy", "healthy fats", "vegetarian"],
     "components": [
       {
         "foodName": "Bread Slice",
@@ -70,12 +55,7 @@
   },
   {
     "name": "Peanut Butter Sandwich",
-    "keywords": [
-      "sandwich",
-      "lunch",
-      "snack",
-      "quick meal"
-    ],
+    "keywords": ["sandwich", "lunch", "snack", "quick meal"],
     "components": [
       {
         "foodName": "Bread Slice",
@@ -89,12 +69,7 @@
   },
   {
     "name": "Chicken Rice Bowl",
-    "keywords": [
-      "dinner",
-      "protein",
-      "meal",
-      "lunch"
-    ],
+    "keywords": ["dinner", "protein", "meal", "lunch"],
     "components": [
       {
         "foodName": "Broccoli",

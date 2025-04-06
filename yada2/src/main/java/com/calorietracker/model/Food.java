@@ -3,6 +3,7 @@ package com.calorietracker.model;
 import java.util.List;
 import java.util.ArrayList;
 
+// This class represents a food item in the calorie tracker application.
 public abstract class Food {
     private String name;
     private List<String> keywords;

@@ -2,6 +2,9 @@ package com.calorietracker.model;
 
 import java.util.List;
 
+/**
+ * Represents a basic food item with a name, keywords, and calories per serving.
+ */
 public class BasicFood extends Food {
     private double calories;
     

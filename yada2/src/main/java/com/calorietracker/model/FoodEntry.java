@@ -2,6 +2,7 @@ package com.calorietracker.model;
 
 import java.time.LocalDateTime;
 
+// This class represents a food entry in the calorie tracker application.
 public class FoodEntry {
     private Food food;
     private double servings;

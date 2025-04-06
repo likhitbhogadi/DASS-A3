@@ -1,0 +1,333 @@
+@startuml CalorieTrackerApplication
+
+' Model Classes
+abstract class Food {
+  - name: String
+  - keywords: List<String>
+  + getName(): String
+  + getKeywords(): List<String>
+  + addKeyword(String): void
+  + matchesKeyword(String): boolean
+  + {abstract} getCaloriesPerServing(): double
+}
+
+class BasicFood extends Food {
+  - calories: double
+  + getCaloriesPerServing(): double
+  + setCalories(double): void
+}
+
+class CompositeFood extends Food {
+  - components: Map<Food, Double>
+  + addComponent(Food, double): void
+  + getComponents(): Map<Food, Double>
+  + getCaloriesPerServing(): double
+}
+
+class FoodEntry {
+  - food: Food
+  - servings: double
+  - timestamp: LocalDateTime
+  + getFood(): Food
+  + getServings(): double
+  + getTimestamp(): LocalDateTime
+  + getTotalCalories(): double
+}
+
+class DailyLog {
+  - date: LocalDate
+  - entries: List<FoodEntry>
+  + getDate(): LocalDate
+  + getEntries(): List<FoodEntry>
+  + addEntry(FoodEntry): void
+  + removeEntry(FoodEntry): boolean
+  + getTotalCalories(): double
+}
+
+class User {
+  - gender: String
+  - height: double
+  - age: int
+  - weightByDate: Map<LocalDate, Double>
+  - activityLevelByDate: Map<LocalDate, ActivityLevel>
+  + getGender(): String
+  + getHeight(): double
+  + getAge(): int
+  + getWeight(LocalDate): double
+  + getActivityLevel(LocalDate): ActivityLevel
+  + setWeight(LocalDate, double): void
+  + setActivityLevel(LocalDate, ActivityLevel): void
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+  EXTRA_ACTIVE
+  - factor: double
+  + getFactor(): double
+}
+
+class UserProfile {
+  - gender: String
+  - height: double
+  - age: int
+  - weightHistory: Map<String, Double>
+  - activityLevelHistory: Map<String, String>
+  + getGender(): String
+  + setGender(String): void
+  + getHeight(): double
+  + setHeight(double): void
+  + getAge(): int
+  + setAge(int): void
+  + getWeightHistory(): Map<String, Double>
+  + setWeightHistory(Map<String, Double>): void
+  + getActivityLevelHistory(): Map<String, String>
+  + setActivityLevelHistory(Map<String, String>): void
+  + toUser(): User
+  + {static} fromUser(User): UserProfile
+}
+
+' DB Classes
+interface FoodDatabase {
+  + getAllFoods(): List<Food>
+  + getAllBasicFoods(): List<BasicFood>
+  + getAllCompositeFoods(): List<CompositeFood>
+  + getFoodByName(String): Optional<Food>
+  + searchFoods(String): List<Food>
+  + addBasicFood(BasicFood): void
+  + addCompositeFood(CompositeFood): void
+  + removeFood(String): boolean
+  + save(): void
+  + load(): void
+}
+
+class JsonFoodDatabase implements FoodDatabase {
+  - basicFoodsFilePath: String
+  - compositeFoodsFilePath: String
+  - gson: Gson
+  - basicFoods: Map<String, BasicFood>
+  - compositeFoods: Map<String, CompositeFood>
+  - createFileIfNotExists(String): void
+}
+
+class LogManager {
+  - logFilePath: String
+  - gson: Gson
+  - foodDatabase: FoodDatabase
+  - logs: Map<LocalDate, DailyLog>
+  + getOrCreateLog(LocalDate): DailyLog
+  + addFoodEntry(LocalDate, Food, double): boolean
+  + removeFoodEntry(LocalDate, int): boolean
+  + save(): void
+  + load(): void
+}
+
+class ProfileManager {
+  - profileFilePath: String
+  - gson: Gson
+  + loadUserProfile(): User
+  + saveUserProfile(User): void
+}
+
+' Service Classes
+interface CalorieCalculator {
+  + getName(): String
+  + calculateTargetCalories(User, LocalDate): double
+}
+
+class HarrisBenedictCalculator implements CalorieCalculator {
+  + getName(): String
+  + calculateTargetCalories(User, LocalDate): double
+}
+
+class MifflinStJeorCalculator implements CalorieCalculator {
+  + getName(): String
+  + calculateTargetCalories(User, LocalDate): double
+}
+
+interface FoodSource {
+  + getSourceName(): String
+  + searchFoods(String): List<BasicFood>
+  + getFoodDetails(String): BasicFood
+}
+
+class LocalFoodSource implements FoodSource {
+  - foodDatabase: FoodDatabase
+  + getSourceName(): String
+  + searchFoods(String): List<BasicFood>
+  + getFoodDetails(String): BasicFood
+}
+
+class ExampleWebFoodSource implements FoodSource {
+  + getSourceName(): String
+  + searchFoods(String): List<BasicFood>
+  + getFoodDetails(String): BasicFood
+}
+
+class FoodSourceManager {
+  - foodSources: Map<String, FoodSource>
+  + addFoodSource(FoodSource): void
+  + getAvailableSources(): List<String>
+  + searchFoodsFromSource(String, String): List<BasicFood>
+  + searchFoodsFromAllSources(String): List<BasicFood>
+  + getFoodDetails(String, String): BasicFood
+}
+
+' Command Classes
+interface Command {
+  + execute(): void
+  + undo(): void
+  + getDescription(): String
+}
+
+class AddFoodEntryCommand implements Command {
+  - logManager: LogManager
+  - date: LocalDate
+  - food: Food
+  - servings: double
+  - addedIndex: int
+  + execute(): void
+  + undo(): void
+  + getDescription(): String
+}
+
+class RemoveFoodEntryCommand implements Command {
+  - logManager: LogManager
+  - date: LocalDate
+  - entryIndex: int
+  - removedEntry: FoodEntry
+  + execute(): void
+  + undo(): void
+  + getDescription(): String
+}
+
+class CommandInvoker {
+  - undoStack: Stack<Command>
+  + executeCommand(Command): void
+  + canUndo(): boolean
+  + undo(): void
+  + getCommandHistory(): Stack<Command>
+}
+
+' Controller Class
+class CalorieTrackerController {
+  - foodDatabase: FoodDatabase
+  - logManager: LogManager
+  - profileManager: ProfileManager
+  - commandInvoker: CommandInvoker
+  - user: User
+  - currentDate: LocalDate
+  - currentCalculator: CalorieCalculator
+  - calculators: Map<String, CalorieCalculator>
+  + createUser(String, double, int, double, ActivityLevel): void
+  + getUser(): User
+  + updateUserWeight(double): void
+  + updateUserActivityLevel(ActivityLevel): void
+  + updateUserHeight(double): void
+  + updateUserAge(int): void
+  + getCurrentDate(): LocalDate
+  + setCurrentDate(LocalDate): void
+  + getAvailableCalculators(): List<String>
+  + setCurrentCalculator(String): void
+  + getTargetCalories(): double
+  + getCurrentCalculatorName(): String
+  + getAllFoods(): List<Food>
+  + searchFoods(String): List<Food>
+  + getFoodByName(String): Optional<Food>
+  + addBasicFood(String, List<String>, double): void
+  + addCompositeFood(String, List<String>, Map<Food, Double>): void
+  + saveDatabase(): void
+  + getCurrentDayLog(): DailyLog
+  + getDailyLog(LocalDate): DailyLog
+  + getCurrentDayCalories(): double
+  + getCalorieDifference(): double
+  + addFoodEntry(Food, double): void
+  + removeFoodEntry(int): void
+  + undo(): void
+  + getCommandHistory(): List<String>
+  + saveLog(): void
+  + saveAllData(): void
+}
+
+' CLI Class
+class CalorieTrackerCLI {
+  - scanner: Scanner
+  - controller: CalorieTrackerController
+  - running: boolean
+  + start(): void
+  - setupUser(): void
+  - displayMainMenu(): void
+  - processMainMenuChoice(int): void
+  - viewFoodLog(): void
+  - updateFoodLog(): void
+  - promptForDate(String): LocalDate
+  - addBasicFood(): void
+  - createCompositeFood(): void
+  - searchFoods(): void
+  - displayFoodDetails(Food): void
+  - changeDate(): void
+  - updateUserInfo(): void
+  - changeCalorieCalculator(): void
+  - undoLastAction(): void
+  - saveData(): void
+  - viewCommandHistory(): void
+  - viewNutritionalSummary(): void
+  + saveAllDataBeforeExit(): void
+  - exitApplication(): void
+  - getIntInput(String, int, int): int
+  - getDoubleInput(String, double, double): double
+}
+
+class Colors {
+  + {static} RESET: String
+  + {static} BLACK: String
+  + {static} RED: String
+  + {static} GREEN: String
+  + {static} YELLOW: String
+  + {static} BLUE: String
+  + {static} PURPLE: String
+  + {static} CYAN: String
+  + {static} WHITE: String
+  + {static} colorize(String, String): String
+  + {static} colorizeCalories(double, double): String
+}
+
+' Main Class
+class CalorieTrackerApp {
+  + {static} main(String[]): void
+}
+
+' Relationships
+ActivityLevel <- User
+User <- UserProfile
+
+Food <|-- BasicFood
+Food <|-- CompositeFood
+Food "1" <--> "*" FoodEntry
+FoodEntry "*" <--> "1" DailyLog
+LocalDate "1" <--> "1" DailyLog
+Food "1" <-- "*" CompositeFood
+
+FoodDatabase <-- LogManager
+FoodDatabase <-- LocalFoodSource
+User <-- CalorieCalculator
+
+CommandInvoker o--> "*" Command
+Command <|-- AddFoodEntryCommand
+Command <|-- RemoveFoodEntryCommand
+LogManager <-- AddFoodEntryCommand
+LogManager <-- RemoveFoodEntryCommand
+
+FoodSourceManager o--> "*" FoodSource
+FoodSource <|-- LocalFoodSource
+FoodSource <|-- ExampleWebFoodSource
+
+FoodDatabase <-- CalorieTrackerController
+LogManager <-- CalorieTrackerController
+ProfileManager <-- CalorieTrackerController
+CommandInvoker <-- CalorieTrackerController
+CalorieCalculator <-- CalorieTrackerController
+CalorieTrackerController <-- CalorieTrackerCLI
+@enduml

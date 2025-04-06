@@ -280,20 +280,6 @@ class CalorieTrackerCLI {
   - getDoubleInput(String, double, double): double
 }
 
-class Colors {
-  + {static} RESET: String
-  + {static} BLACK: String
-  + {static} RED: String
-  + {static} GREEN: String
-  + {static} YELLOW: String
-  + {static} BLUE: String
-  + {static} PURPLE: String
-  + {static} CYAN: String
-  + {static} WHITE: String
-  + {static} colorize(String, String): String
-  + {static} colorizeCalories(double, double): String
-}
-
 ' Main Class
 class CalorieTrackerApp {
   + {static} main(String[]): void
@@ -307,7 +293,6 @@ Food <|-- BasicFood
 Food <|-- CompositeFood
 Food "1" <--> "*" FoodEntry
 FoodEntry "*" <--> "1" DailyLog
-LocalDate "1" <--> "1" DailyLog
 Food "1" <-- "*" CompositeFood
 
 FoodDatabase <-- LogManager
@@ -330,4 +315,5 @@ ProfileManager <-- CalorieTrackerController
 CommandInvoker <-- CalorieTrackerController
 CalorieCalculator <-- CalorieTrackerController
 CalorieTrackerController <-- CalorieTrackerCLI
+CalorieTrackerApp <-- CalorieTrackerCLI
 @enduml

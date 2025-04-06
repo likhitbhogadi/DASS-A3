@@ -1,7 +1,12 @@
 [
   {
     "name": "Salmon Dinner",
-    "keywords": ["dinner", "healthy", "protein", "omega-3"],
+    "keywords": [
+      "dinner",
+      "healthy",
+      "protein",
+      "omega-3"
+    ],
     "components": [
       {
         "foodName": "Salmon Fillet",
@@ -12,18 +17,23 @@
         "servings": 1.0
       },
       {
-        "foodName": "Spinach",
-        "servings": 2.0
-      },
-      {
         "foodName": "Olive Oil",
         "servings": 0.5
+      },
+      {
+        "foodName": "Spinach",
+        "servings": 2.0
       }
     ]
   },
   {
     "name": "Greek Yogurt Parfait",
-    "keywords": ["breakfast", "healthy", "protein", "snack"],
+    "keywords": [
+      "breakfast",
+      "healthy",
+      "protein",
+      "snack"
+    ],
     "components": [
       {
         "foodName": "Banana",
@@ -37,12 +47,13 @@
   },
   {
     "name": "Avocado Toast",
-    "keywords": ["breakfast", "trendy", "healthy fats", "vegetarian"],
+    "keywords": [
+      "breakfast",
+      "trendy",
+      "healthy fats",
+      "vegetarian"
+    ],
     "components": [
-      {
-        "foodName": "Avocado",
-        "servings": 0.5
-      },
       {
         "foodName": "Egg",
         "servings": 1.0
@@ -50,26 +61,40 @@
       {
         "foodName": "Bread Slice",
         "servings": 2.0
+      },
+      {
+        "foodName": "Avocado",
+        "servings": 0.5
       }
     ]
   },
   {
     "name": "Peanut Butter Sandwich",
-    "keywords": ["sandwich", "lunch", "snack", "quick meal"],
+    "keywords": [
+      "sandwich",
+      "lunch",
+      "snack",
+      "quick meal"
+    ],
     "components": [
       {
-        "foodName": "Peanut Butter",
+        "foodName": "Bread Slice",
         "servings": 2.0
       },
       {
-        "foodName": "Bread Slice",
+        "foodName": "Peanut Butter",
         "servings": 2.0
       }
     ]
   },
   {
     "name": "Chicken Rice Bowl",
-    "keywords": ["dinner", "protein", "meal", "lunch"],
+    "keywords": [
+      "dinner",
+      "protein",
+      "meal",
+      "lunch"
+    ],
     "components": [
       {
         "foodName": "Broccoli",
@@ -91,7 +116,10 @@
   },
   {
     "name": "rice2",
-    "keywords": ["new rice", "hello"],
+    "keywords": [
+      "new rice",
+      "hello"
+    ],
     "components": [
       {
         "foodName": "rice",
